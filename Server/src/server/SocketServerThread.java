@@ -9,11 +9,8 @@ import Interact.Room;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SocketServerThread implements Runnable {
 
@@ -173,7 +170,6 @@ public class SocketServerThread implements Runnable {
         while (alive) {
             try {
                 Object incomingMessage = serverInput.readObject();
-                System.out.println(incomingMessage.toString());
                 if (!alive) {
                     break;
                 }
@@ -183,12 +179,6 @@ public class SocketServerThread implements Runnable {
                     JoinInteractRequest temp = (JoinInteractRequest) incomingMessage;
                     switch (temp.getType()) {
                         case CHAT:
-                            for (SocketServerThread sT : SocketServer.socketThreads) {
-                                if (sT.getName().equalsIgnoreCase(temp.getRoomName())) {
-                                    sT.sendToClient(temp.getName());
-                                }
-                            }
-                            sleep(1000);
                             onJoinChatRequest(temp);
                             break;
                         case ROOM:
@@ -209,24 +199,15 @@ public class SocketServerThread implements Runnable {
                         online[j++] = i.name;
                     }
                     sendToClient(online);
-                } else if (incomingMessage instanceof Boolean) {
-                    for (Chat chat : SocketServer.chats) {
-                        if (chat.getName().equalsIgnoreCase(this.name)) {
-                            chat.accept = (Boolean) incomingMessage;
-                            break;
-                        }
-                    }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 killThread();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
         try {
             cleanUp();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 

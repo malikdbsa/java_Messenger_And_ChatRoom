@@ -8,7 +8,6 @@ public class Chat {
     private String name;
     private ArrayList<SocketServerThread> members;
     private final int maxMembers = 2;
-    public boolean accept;
 
     public Chat(String name) {
         this.name = name;
@@ -17,8 +16,7 @@ public class Chat {
 
     public Chat(String name, ArrayList<SocketServerThread> members) {
         this(name);
-        this.members = members;
-        accept = false;    
+        this.members = members;   
     }
 
     public String getName() {
@@ -30,7 +28,7 @@ public class Chat {
     }
 
     public boolean addMember(SocketServerThread member) {
-        if (members.size() < maxMembers && accept) {
+        if (members.size() < maxMembers) {
             members.add(member);
             return true;
         }

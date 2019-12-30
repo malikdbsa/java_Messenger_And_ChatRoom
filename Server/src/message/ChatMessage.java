@@ -27,13 +27,22 @@ public class ChatMessage implements Serializable {
         this.type = type;
     }
 
+    public ChatMessage(String senderName, String roomName, String message, byte[] file, ChatMessageType type, Date date) {
+        this.senderName = senderName;
+        this.roomName = roomName;
+        this.message = message;
+        this.file = file;
+        this.type = type;
+        this.date = date;
+    }
+
     public ChatMessage(String senderName, String roomName, ChatMessageType type, String message, Date date) {
         this(senderName, roomName, type);
         this.message = message;
         this.date = date;
     }
 
-    public ChatMessage(String senderName, String roomName, ChatMessageType type, byte[] file) {
+    public ChatMessage(String senderName, String roomName, ChatMessageType type, byte[] file , Date date) {
         this(senderName, roomName, type);
         this.file = file;
     }
